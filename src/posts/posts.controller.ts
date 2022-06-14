@@ -12,6 +12,8 @@ import { Put } from '@nestjs/common';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ParseIntPipe } from '@nestjs/common';
 import { Param } from '@nestjs/common';
+import { Delete } from '@nestjs/common';
+import { Get } from '@nestjs/common';
 
 @Controller('posts')
 export class PostsController {
@@ -30,5 +32,10 @@ export class PostsController {
     @Body() updatePostDto: UpdatePostDto,
   ): Promise<Posts> {
     return this.postsService.updatePost(id, updatePostDto);
+  }
+
+  @Get('/')
+  getAllPost(): Promise<Posts[]> {
+    return this.postsService.getAllPost();
   }
 }

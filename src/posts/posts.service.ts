@@ -37,4 +37,8 @@ export class PostsService {
 
     return post;
   }
+
+  async getAllPost(): Promise<Posts[]> {
+    return await this.postsRepository.find();
+  }
 }
