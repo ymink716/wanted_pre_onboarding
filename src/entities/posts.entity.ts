@@ -1,13 +1,7 @@
-import {
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  Entity,
-  ManyToOne,
-} from 'typeorm';
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
 @Entity()
-export class JobPosting extends BaseEntity {
+export class Posts extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,7 +15,7 @@ export class JobPosting extends BaseEntity {
   position: string;
 
   @Column()
-  compensation: string;
+  compensation: number;
 
   @Column()
   tech: string;
