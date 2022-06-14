@@ -34,6 +34,11 @@ export class PostsController {
     return this.postsService.updatePost(id, updatePostDto);
   }
 
+  @Delete('/:id')
+  deletePost(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.postsService.deletePost(id);
+  }
+
   @Get('/')
   getAllPost(): Promise<Posts[]> {
     return this.postsService.getAllPost();

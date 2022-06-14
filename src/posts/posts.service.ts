@@ -38,6 +38,14 @@ export class PostsService {
     return post;
   }
 
+  async deletePost(id: number): Promise<void> {
+    const result = await this.postsRepository.delete({ id });
+
+    if (result.affected === 0) {
+      throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
+    }
+  }
+
   async getAllPost(): Promise<Posts[]> {
     return await this.postsRepository.find();
   }
