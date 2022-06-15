@@ -20,4 +20,16 @@ export class PostsRepository extends Repository<Posts> {
 
     return post;
   }
+
+  async getPostByKeyword(keyword: string): Promise<Posts[]> {
+    const posts = await this.createQueryBuilder('posts')
+      .where('posts.country LIKE :text', { text: `%${keyword}%` })
+      .orWhere('posts.region LIKE :text', { text: `%${keyword}%` })
+      .orWhere('posts.position LIKE :text', { text: `%${keyword}%` })
+      .orWhere('posts.tech LIKE :text', { text: `%${keyword}%` })
+      .orWhere('posts.description LIKE :text', { text: `%${keyword}%` })
+      .getMany();
+
+    return posts;
+  }
 }

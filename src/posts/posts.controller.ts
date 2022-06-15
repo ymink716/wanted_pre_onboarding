@@ -14,6 +14,7 @@ import { ParseIntPipe } from '@nestjs/common';
 import { Param } from '@nestjs/common';
 import { Delete } from '@nestjs/common';
 import { Get } from '@nestjs/common';
+import { Query } from '@nestjs/common';
 
 @Controller('posts')
 export class PostsController {
@@ -42,5 +43,10 @@ export class PostsController {
   @Get('/')
   getAllPost(): Promise<Posts[]> {
     return this.postsService.getAllPost();
+  }
+
+  @Get('/search')
+  getPostByKeyword(@Query('keyword') keyword: string): Promise<Posts[]> {
+    return this.postsService.getPostByKeyword(keyword);
   }
 }

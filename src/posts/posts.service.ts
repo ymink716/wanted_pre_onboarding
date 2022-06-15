@@ -49,4 +49,8 @@ export class PostsService {
   async getAllPost(): Promise<Posts[]> {
     return await this.postsRepository.find();
   }
+
+  async getPostByKeyword(keyword: string): Promise<Posts[]> {
+    return await this.postsRepository.getPostByKeyword(keyword);
+  }
 }
