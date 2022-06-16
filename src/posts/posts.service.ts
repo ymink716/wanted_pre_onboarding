@@ -29,7 +29,10 @@ export class PostsService {
   }
 
   async getAllPost(): Promise<Posts[]> {
-    return await this.postsRepository.find();
+    return await this.postsRepository.find({
+      relations: ['company'],
+      select: ['id', 'company', 'position', 'compensation', 'tech'],
+    });
   }
 
   async getPostByKeyword(keyword: string): Promise<Posts[]> {
