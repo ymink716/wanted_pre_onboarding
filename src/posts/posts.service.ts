@@ -16,23 +16,8 @@ export class PostsService {
     return this.postsRepository.createPost(createPostDto);
   }
 
-  async updatePost(id: number, updatePostDto: UpdatePostDto): Promise<Posts> {
-    const post = await this.postsRepository.findOne(id);
-
-    if (!post) {
-      throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
-    }
-
-    const { position, compensation, tech, description } = updatePostDto;
-
-    post.position = position;
-    post.compensation = compensation;
-    post.tech = tech;
-    post.description = description;
-
-    await this.postsRepository.save(post);
-
-    return post;
+  updatePost(id: number, updatePostDto: UpdatePostDto): Promise<Posts> {
+    return this.postsRepository.updatePost(id, updatePostDto);
   }
 
   async deletePost(id: number): Promise<void> {

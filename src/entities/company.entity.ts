@@ -21,6 +21,6 @@ export class Company extends BaseEntity {
   @Column()
   region: string;
 
-  @OneToMany(() => Posts, (posts) => posts.id, { eager: true })
+  @OneToMany(() => Posts, (posts) => posts.id)
   postsId: Posts[];
 }

@@ -25,7 +25,7 @@ export class Posts extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => Company, (company) => company.postsId, { eager: false })
+  @ManyToOne(() => Company, (company) => company.postsId)
   @JoinColumn({ name: 'company_id' })
   company: Company;
 }

@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Posts } from '../entities/posts.entity';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @EntityRepository(Posts)
 export class PostsRepository extends Repository<Posts> {
@@ -8,16 +9,38 @@ export class PostsRepository extends Repository<Posts> {
     const { company_id, position, compensation, tech, description } =
       createPostDto;
 
-    const post: Posts = new Posts();
-    post.id = company_id;
-    post.position = position;
-    post.compensation = compensation;
-    post.tech = tech;
-    post.description = description;
+    const company = await this.createQueryBuilder()
+      .select('company')
+      .from('Company', 'company')
+      .where('company.id = :id', { id: company_id })
+      .getOne();
+
+    const post: Posts = this.create({
+      company,
+      position,
+      compensation,
+      tech,
+      description,
+    });
+
+    // const result = this.createQueryBuilder()
+    //   .insert('')
 
     await this.save(post);
-
     return post;
+  }
+
+  async updatePost(id: number, updatePostDto: UpdatePostDto): Promise<Posts> {
+    const { position, compensation, tech, description } = updatePostDto;
+
+    const post = await this.createQueryBuilder()
+      .update(Posts)
+      .set({ position, compensation, tech, description })
+      .where('id = :id', { id })
+      .returning('*')
+      .execute();
+
+    return post.raw[0];
   }
 
   async getPostByKeyword(keyword: string): Promise<Posts[]> {
