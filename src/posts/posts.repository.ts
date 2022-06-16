@@ -51,8 +51,19 @@ export class PostsRepository extends Repository<Posts> {
 
   async getPostByKeyword(keyword: string): Promise<Posts[]> {
     const posts = await this.createQueryBuilder('posts')
-      .where('posts.country LIKE :text', { text: `%${keyword}%` })
-      .orWhere('posts.region LIKE :text', { text: `%${keyword}%` })
+      .select([
+        'posts.id',
+        'posts.position',
+        'posts.compensation',
+        'posts.tech',
+        'company.name',
+        'company.country',
+        'company.region',
+      ])
+      .innerJoin('posts.company', 'company')
+      .where('company.name LIKE :text', { text: `%${keyword}%` })
+      .orWhere('company.country LIKE :text', { text: `%${keyword}%` })
+      .orWhere('company.region LIKE :text', { text: `%${keyword}%` })
       .orWhere('posts.position LIKE :text', { text: `%${keyword}%` })
       .orWhere('posts.tech LIKE :text', { text: `%${keyword}%` })
       .orWhere('posts.description LIKE :text', { text: `%${keyword}%` })
