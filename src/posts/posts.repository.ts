@@ -71,4 +71,15 @@ export class PostsRepository extends Repository<Posts> {
 
     return posts;
   }
+
+  async getPostById(id: number) {
+    const post = await this.findOne(id, { relations: ['company'] });
+
+    const id_list = await this.find({
+      where: { company: post.company },
+      select: ['id'],
+    });
+
+    return { post, id_list };
+  }
 }

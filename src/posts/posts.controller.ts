@@ -49,4 +49,9 @@ export class PostsController {
   getPostByKeyword(@Query('keyword') keyword: string): Promise<Posts[]> {
     return this.postsService.getPostByKeyword(keyword);
   }
+
+  @Get('/:id')
+  getPostById(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.getPostById(id);
+  }
 }

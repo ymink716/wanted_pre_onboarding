@@ -38,4 +38,8 @@ export class PostsService {
   async getPostByKeyword(keyword: string): Promise<Posts[]> {
     return await this.postsRepository.getPostByKeyword(keyword);
   }
+
+  getPostById(id: number) {
+    return this.postsRepository.getPostById(id);
+  }
 }
