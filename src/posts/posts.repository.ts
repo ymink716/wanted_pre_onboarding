@@ -5,12 +5,11 @@ import { Posts } from '../entities/posts.entity';
 @EntityRepository(Posts)
 export class PostsRepository extends Repository<Posts> {
   async createPost(createPostDto: CreatePostDto): Promise<Posts> {
-    const { country, region, position, compensation, tech, description } =
+    const { company_id, position, compensation, tech, description } =
       createPostDto;
 
     const post: Posts = new Posts();
-    post.country = country;
-    post.region = region;
+    post.id = company_id;
     post.position = position;
     post.compensation = compensation;
     post.tech = tech;

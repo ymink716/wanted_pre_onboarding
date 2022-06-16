@@ -1,4 +1,12 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import {
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Company } from './company.entity';
 
 @Entity()
 export class Posts extends BaseEntity {
@@ -16,4 +24,8 @@ export class Posts extends BaseEntity {
 
   @Column()
   description: string;
+
+  @ManyToOne(() => Company, (company) => company.postsId, { eager: false })
+  @JoinColumn({ name: 'company_id' })
+  company: Company;
 }

@@ -23,11 +23,8 @@ export class PostsService {
       throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
     }
 
-    const { country, region, position, compensation, tech, description } =
-      updatePostDto;
+    const { position, compensation, tech, description } = updatePostDto;
 
-    post.country = country;
-    post.region = region;
     post.position = position;
     post.compensation = compensation;
     post.tech = tech;
