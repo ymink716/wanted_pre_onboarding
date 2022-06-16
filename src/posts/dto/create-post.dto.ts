@@ -1,17 +1,9 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatePostDto {
-  //@IsNumber()
-  //@IsNotEmpty()
-  //company_id: number;
-
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  country: string;
-
-  @IsString()
-  @IsNotEmpty()
-  region: string;
+  company_id: number;
 
   @IsString()
   @IsNotEmpty()
