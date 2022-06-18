@@ -31,18 +31,19 @@ export class JobPostingRepository extends Repository<JobPosting> {
   ): Promise<JobPosting> {
     const { position, compensation, tech, description } = updateJobPostingDto;
 
-    const result: UpdateResult = await this.createQueryBuilder()
-      .update(JobPosting)
-      .set({ position, compensation, tech, description })
-      .where('id = :id', { id })
-      .returning('*')
-      .execute();
-
-    if (result.affected === 0) {
+    const jobPosting = await this.findOne({ where: { id } });
+    console.log(jobPosting);
+    if (!jobPosting) {
       throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
     }
 
-    return result.raw[0];
+    jobPosting.position = position;
+    jobPosting.compensation = compensation;
+    jobPosting.tech = tech;
+    jobPosting.description = description;
+
+    await this.save(jobPosting);
+    return jobPosting;
   }
 
   async getPostByKeyword(keyword: string): Promise<JobPosting[]> {
@@ -71,11 +72,11 @@ export class JobPostingRepository extends Repository<JobPosting> {
   async getJobPostingById(id: number) {
     const jobPosting = await this.findOne(id, { relations: ['company'] });
 
-    const id_list = await this.find({
+    const idList = await this.find({
       where: { company: jobPosting.company },
       select: ['id'],
     });
 
-    return { jobPosting, id_list };
+    return { jobPosting, idList };
   }
 }

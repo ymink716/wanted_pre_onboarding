@@ -15,6 +15,7 @@ import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { JobPosting } from '../entities/job-posting.entity';
 import { JobPostingService } from './job-posting.service';
 import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
+import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
 
 @Controller('posts')
 export class JobPostingController {
@@ -24,7 +25,7 @@ export class JobPostingController {
   @UsePipes(ValidationPipe)
   createJobPosting(
     @Body() createJobPostingDto: CreateJobPostingDto,
-  ): Promise<JobPosting> {
+  ): Promise<ResponseJobPostingDto> {
     return this.jobPostingService.createJobPosting(createJobPostingDto);
   }
 
@@ -43,12 +44,16 @@ export class JobPostingController {
   }
 
   @Get('/')
-  getJobPostings(@Query('search') keyword: string): Promise<JobPosting[]> {
+  getJobPostings(
+    @Query('search') keyword: string,
+  ): Promise<ResponseJobPostingDto[]> {
     return this.jobPostingService.getJobPostings(keyword);
   }
 
   @Get('/:id')
-  getJobPostingById(@Param('id', ParseIntPipe) id: number) {
+  getJobPostingById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ResponseJobPostingDto> {
     return this.jobPostingService.getJobPostingById(id);
   }
 }

@@ -1,7 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 import { JobApplication } from 'src/entities/job-application.entity';
-import { CreateJobApplicationDto } from './dto/create-job-application.dto';
 import { User } from 'src/entities/user.entity';
 import { JobPosting } from 'src/entities/job-posting.entity';
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { JobPosting } from '../entities/job-posting.entity';
@@ -7,6 +7,7 @@ import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Company } from 'src/entities/company.entity';
 import { Repository } from 'typeorm';
+import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
 
 @Injectable()
 export class JobPostingService {
@@ -19,7 +20,7 @@ export class JobPostingService {
 
   async createJobPosting(
     createJobPostingDto: CreateJobPostingDto,
-  ): Promise<JobPosting> {
+  ): Promise<ResponseJobPostingDto> {
     const { company_id } = createJobPostingDto;
     const company = await this.companyRepository.findOne(company_id);
 
@@ -27,10 +28,12 @@ export class JobPostingService {
       throw new NotFoundException('존재하지 않는 회사입니다.');
     }
 
-    return this.jobPostingRepository.createJobPosting(
+    const jobPosting = await this.jobPostingRepository.createJobPosting(
       company,
       createJobPostingDto,
     );
+
+    return ResponseJobPostingDto.fromEntity(jobPosting);
   }
 
   updateJobPosting(
@@ -48,18 +51,27 @@ export class JobPostingService {
     }
   }
 
-  async getJobPostings(keyword: string): Promise<JobPosting[]> {
+  async getJobPostings(keyword: string): Promise<ResponseJobPostingDto[]> {
+    let posts;
+
     if (!keyword) {
-      return await this.jobPostingRepository.find({
-        relations: ['company'],
-        select: ['id', 'company', 'position', 'compensation', 'tech'],
-      });
+      posts = await this.jobPostingRepository.find({ relations: ['company'] });
     } else {
-      return this.jobPostingRepository.getPostByKeyword(keyword);
+      posts = await this.jobPostingRepository.getPostByKeyword(keyword);
     }
+
+    const responseDtos = [];
+    posts.map((p) => {
+      responseDtos.push(ResponseJobPostingDto.fromEntity(p));
+    });
+
+    return responseDtos;
   }
 
-  getJobPostingById(id: number) {
-    return this.jobPostingRepository.getJobPostingById(id);
+  async getJobPostingById(id: number): Promise<ResponseJobPostingDto> {
+    const { jobPosting, idList } =
+      await this.jobPostingRepository.getJobPostingById(id);
+
+    return ResponseJobPostingDto.getDetails(jobPosting, idList);
   }
 }
