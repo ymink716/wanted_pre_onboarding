@@ -21,16 +21,18 @@ export class JobApplicationService {
   async createJobApplication(
     createJobApplicationDto: CreateJobApplicationDto,
   ): Promise<JobApplication> {
-    const { jobPostingId, userId } = createJobApplicationDto;
+    const { job_posting_id, user_id } = createJobApplicationDto;
 
     try {
-      const user = await this.userRepository.findOne(userId);
+      const user = await this.userRepository.findOne(user_id);
 
       if (!user) {
         throw new NotFoundException('일치하는 사용자가 없습니다.');
       }
 
-      const jobPosting = await this.jobPostingRepository.findOne(jobPostingId);
+      const jobPosting = await this.jobPostingRepository.findOne(
+        job_posting_id,
+      );
 
       if (!jobPosting) {
         throw new NotFoundException('존재하지 않는 채용공고입니다.');

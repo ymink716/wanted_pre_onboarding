@@ -6,6 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Company } from './company.entity';
 import { JobApplication } from './job-application.entity';
@@ -26,6 +28,12 @@ export class JobPosting extends BaseEntity {
 
   @Column()
   description: string;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
 
   @ManyToOne(() => Company, (company) => company.jobPostings)
   @JoinColumn({ name: 'company_id' })

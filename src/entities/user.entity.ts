@@ -16,6 +16,7 @@ export class User extends BaseEntity {
   name: string;
 
   @Column()
+  @Column()
   email: string;
 
   @OneToMany(() => JobApplication, (jobApplication) => jobApplication.id)

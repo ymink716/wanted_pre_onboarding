@@ -3,9 +3,9 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateJobApplicationDto {
   @IsNumber()
   @IsNotEmpty()
-  jobPostingId: number;
+  job_posting_id: number;
 
   @IsNumber()
   @IsNotEmpty()
-  userId: number;
+  user_id: number;
 }

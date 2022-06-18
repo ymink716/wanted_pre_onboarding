@@ -4,6 +4,8 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { JobPosting } from './job-posting.entity';
 import { User } from './user.entity';
@@ -12,6 +14,12 @@ import { User } from './user.entity';
 export class JobApplication extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
 
   @ManyToOne(() => User, (user) => user.jobApplications)
   @JoinColumn({ name: 'user_id' })

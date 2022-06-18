@@ -1,24 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { JobPosting } from 'src/entities/job-posting.entity';
 
-@Injectable()
 export class ResponseJobPostingDto {
+  @IsNumber()
+  @IsNotEmpty()
   id: number;
 
+  @IsString()
+  @IsNotEmpty()
   company_name: string;
 
+  @IsString()
+  @IsNotEmpty()
   country: string;
 
+  @IsString()
+  @IsNotEmpty()
   region: string;
 
+  @IsString()
+  @IsNotEmpty()
   position: string;
 
+  @IsString()
+  @IsNotEmpty()
   compensation: number;
 
+  @IsString()
+  @IsNotEmpty()
   tech: string;
 
+  @IsString()
   description: string;
 
+  @IsArray()
   others: number[];
 
   static fromEntity(jobPosting: JobPosting) {
