@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class UpdatePostDto {
+export class UpdateJobPostingDto {
   @IsString()
   @IsNotEmpty()
   position: string;

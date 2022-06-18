@@ -5,7 +5,7 @@ import {
   Entity,
   OneToMany,
 } from 'typeorm';
-import { Posts } from './posts.entity';
+import { JobPosting } from './job-posting.entity';
 
 @Entity()
 export class Company extends BaseEntity {
@@ -21,6 +21,6 @@ export class Company extends BaseEntity {
   @Column()
   region: string;
 
-  @OneToMany(() => Posts, (posts) => posts.id)
-  postsId: Posts[];
+  @OneToMany(() => JobPosting, (jobPosting) => jobPosting.company)
+  jobPostings: JobPosting[];
 }

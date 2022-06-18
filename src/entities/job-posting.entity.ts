@@ -5,11 +5,13 @@ import {
   Entity,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Company } from './company.entity';
+import { JobApplication } from './job-application.entity';
 
 @Entity()
-export class Posts extends BaseEntity {
+export class JobPosting extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,7 +27,10 @@ export class Posts extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => Company, (company) => company.postsId)
+  @ManyToOne(() => Company, (company) => company.jobPostings)
   @JoinColumn({ name: 'company_id' })
   company: Company;
+
+  @OneToMany(() => JobApplication, (jobApplication) => jobApplication.id)
+  jobApplications: JobApplication[];
 }
