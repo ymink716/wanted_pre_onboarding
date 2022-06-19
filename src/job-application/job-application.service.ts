@@ -23,27 +23,16 @@ export class JobApplicationService {
   ): Promise<JobApplication> {
     const { job_posting_id, user_id } = createJobApplicationDto;
 
-    try {
-      const user = await this.userRepository.findOne(user_id);
-
-      if (!user) {
-        throw new NotFoundException('일치하는 사용자가 없습니다.');
-      }
-
-      const jobPosting = await this.jobPostingRepository.findOne(
-        job_posting_id,
-      );
-
-      if (!jobPosting) {
-        throw new NotFoundException('존재하지 않는 채용공고입니다.');
-      }
-
-      return this.jobApplicationRepository.createJobApplication(
-        user,
-        jobPosting,
-      );
-    } catch (error) {
-      console.log(error);
+    const user = await this.userRepository.findOne(user_id);
+    if (!user) {
+      throw new NotFoundException('일치하는 사용자가 없습니다.');
     }
+
+    const jobPosting = await this.jobPostingRepository.findOne(job_posting_id);
+    if (!jobPosting) {
+      throw new NotFoundException('존재하지 않는 채용공고입니다.');
+    }
+
+    return this.jobApplicationRepository.createJobApplication(user, jobPosting);
   }
 }
