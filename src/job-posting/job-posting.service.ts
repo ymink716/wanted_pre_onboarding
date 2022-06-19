@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { JobPosting } from '../entities/job-posting.entity';
@@ -6,8 +6,8 @@ import { JobPostingRepository } from './job-posting.repository';
 import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Company } from 'src/entities/company.entity';
-import { Repository } from 'typeorm';
 import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
+import { CompanyRepository } from './company.repository';
 
 @Injectable()
 export class JobPostingService {
@@ -15,7 +15,7 @@ export class JobPostingService {
     @InjectRepository(JobPostingRepository)
     private jobPostingRepository: JobPostingRepository,
     @InjectRepository(Company)
-    private companyRepository: Repository<Company>,
+    private companyRepository: CompanyRepository,
   ) {}
 
   async createJobPosting(
