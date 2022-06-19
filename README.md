@@ -71,7 +71,7 @@ $ npm run test  # 유닛 테스트
 7. 채용공고 지원 : POST    /application
    * 사용자가 1회만 지원하도록 구현
 
-API 문서 : [https://documenter.getpostman.com/view/8003890/UzBmMT8K]()
+API 문서 : [https://documenter.getpostman.com/view/8003890/UzBmMT8K](https://documenter.getpostman.com/view/8003890/UzBmMT8K)
 
 
 
