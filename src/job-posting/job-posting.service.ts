@@ -8,7 +8,7 @@ import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Company } from 'src/entities/company.entity';
 import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
-import { CompanyRepository } from './company.repository';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class JobPostingService {
@@ -16,7 +16,7 @@ export class JobPostingService {
     @InjectRepository(JobPostingRepository)
     private jobPostingRepository: JobPostingRepository,
     @InjectRepository(Company)
-    private companyRepository: CompanyRepository,
+    private companyRepository: Repository<Company>,
   ) {}
 
   async createJobPosting(createJobPostingDto: CreateJobPostingDto): Promise<ResponseJobPostingDto> {
