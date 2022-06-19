@@ -80,8 +80,16 @@ export class JobPostingService {
   }
 
   async getJobPostingById(id: number): Promise<ResponseJobPostingDto> {
-    const { jobPosting, idList } =
-      await this.jobPostingRepository.getJobPostingById(id);
+    const jobPosting = await this.jobPostingRepository.findOne(id, { relations: ['company'] });
+
+    if (!jobPosting) {
+      throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
+    }
+
+    const idList = await this.jobPostingRepository.find({
+      where: { company: jobPosting.company },
+      select: ['id'],
+    });
 
     return ResponseJobPostingDto.getDetails(jobPosting, idList);
   }

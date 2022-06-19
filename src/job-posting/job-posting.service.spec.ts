@@ -149,5 +149,81 @@ describe('JobPostingService', () => {
     });
   });
 
+  describe("getJobPostings", () => {
+    const posting2 = new JobPosting();
+    posting2.id = 2;
+    posting2.position = '백엔드 개발자';
+    posting2.tech = 'java';
+    posting2.compensation = 500000;
+    posting2.description = 'java 백엔드 개발자를 모집합니다.';
+    posting2.company = company;
 
+    const posting3 = new JobPosting();
+    posting3.id = 3;
+    posting3.position = '프론트엔드 개발자';
+    posting3.tech = '리액트';
+    posting3.compensation = 500000;
+    posting3.description = '리액트 개발자를 모집합니다.';
+    posting3.company = company;
+
+    const postingList: JobPosting[] = [posting, posting2, posting3];
+    const searchedList: JobPosting[] = [posting, posting2];
+    let keyword;
+
+    test("키워드가 없다면 전체 공고 목록을 반환합니다.", async () => {
+      mockJobPostingRepository.find.mockResolvedValue(postingList);
+      const result = await service.getJobPostings(keyword);
+      
+      const resDtos = [];
+      postingList.map(p => {
+        resDtos.push(ResponseJobPostingDto.fromEntity(p));
+      });
+      
+      expect(mockJobPostingRepository.find).toBeCalled();
+      expect(result).toStrictEqual(resDtos);  
+    });
+
+    test("키워드가 있다면 키워드로 검색한 목록을 반환합니다.", async () => {
+      keyword = '백엔드';
+      mockJobPostingRepository.getPostByKeyword.mockResolvedValue(searchedList);
+      const result = await service.getJobPostings(keyword);
+      
+      const resDtos = [];
+      searchedList.map(p => {
+        resDtos.push(ResponseJobPostingDto.fromEntity(p));
+      });
+      
+      expect(mockJobPostingRepository.getPostByKeyword).toBeCalledWith(keyword);
+      expect(result).toStrictEqual(resDtos);  
+    });
+  });
+
+  describe("getJobPostingById", () => {
+    const idList = [ {id: 1}, {id: 2}, {id: 3} ];
+
+    test("해당 공고를 찾을 수 없다면 에러를 반환합니다.", async () => {
+      mockJobPostingRepository.findOne.mockResolvedValue(undefined);
+      
+      const result = async () => await service.getJobPostingById(999);
+      
+      await expect(result).rejects.toThrowError(
+        new NotFoundException('해당 공고를 찾을 수 없습니다.'),
+      );
+    });
+
+    test("채용공고 하나를 찾아 세부사항을 반환합니다.", async () => {
+      mockJobPostingRepository.findOne.mockResolvedValue(posting);
+      mockJobPostingRepository.find.mockResolvedValue(idList);
+
+      const result = await service.getJobPostingById(postingId);
+
+      expect(mockJobPostingRepository.findOne).toHaveBeenCalledWith(
+        postingId, 
+        {relations: ['company']}
+      );
+      expect(mockJobPostingRepository.find).toHaveBeenCalled();
+      const resDto = ResponseJobPostingDto.getDetails(posting, idList);
+      expect(result).toEqual(resDto);
+    });
+  })
 });

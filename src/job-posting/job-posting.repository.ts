@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { EntityRepository, Repository, UpdateResult } from 'typeorm';
 import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { JobPosting } from '../entities/job-posting.entity';
@@ -7,9 +8,7 @@ import { Company } from 'src/entities/company.entity';
 
 @EntityRepository(JobPosting)
 export class JobPostingRepository extends Repository<JobPosting> {
-  async createJobPosting(
-    company: Company,
-    createJobPostingDto: CreateJobPostingDto,
+  async createJobPosting(company: Company, createJobPostingDto: CreateJobPostingDto,
   ): Promise<JobPosting> {
     const { position, compensation, tech, description } = createJobPostingDto;
 
@@ -69,14 +68,14 @@ export class JobPostingRepository extends Repository<JobPosting> {
     return posts;
   }
 
-  async getJobPostingById(id: number) {
-    const jobPosting = await this.findOne(id, { relations: ['company'] });
+  // async getJobPostingById(id: number) {
+  //   const jobPosting = await this.findOne(id, { relations: ['company'] });
 
-    const idList = await this.find({
-      where: { company: jobPosting.company },
-      select: ['id'],
-    });
+  //   const idList = await this.find({
+  //     where: { company: jobPosting.company },
+  //     select: ['id'],
+  //   });
 
-    return { jobPosting, idList };
-  }
+  //   return { jobPosting, idList };
+  // }
 }
