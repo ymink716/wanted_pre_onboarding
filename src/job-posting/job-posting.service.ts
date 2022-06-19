@@ -1,4 +1,5 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { JobPosting } from '../entities/job-posting.entity';
@@ -18,9 +19,7 @@ export class JobPostingService {
     private companyRepository: CompanyRepository,
   ) {}
 
-  async createJobPosting(
-    createJobPostingDto: CreateJobPostingDto,
-  ): Promise<ResponseJobPostingDto> {
+  async createJobPosting(createJobPostingDto: CreateJobPostingDto): Promise<ResponseJobPostingDto> {
     const { company_id } = createJobPostingDto;
     const company = await this.companyRepository.findOne(company_id);
 
@@ -36,16 +35,28 @@ export class JobPostingService {
     return ResponseJobPostingDto.fromEntity(jobPosting);
   }
 
-  updateJobPosting(
-    id: number,
-    updateJobPostingDto: UpdateJobPostingDto,
+  async updateJobPosting(id: number, updateJobPostingDto: UpdateJobPostingDto,
   ): Promise<JobPosting> {
-    return this.jobPostingRepository.updateJobPosting(id, updateJobPostingDto);
+    const { position, compensation, tech, description } = updateJobPostingDto;
+
+    const jobPosting = await this.jobPostingRepository.findOne({ where: { id } });
+
+    if (!jobPosting) {
+      throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
+    }
+
+    jobPosting.position = position;
+    jobPosting.compensation = compensation;
+    jobPosting.tech = tech;
+    jobPosting.description = description;
+
+    await this.jobPostingRepository.save(jobPosting);
+    return jobPosting;
   }
 
   async deleteJobPosting(id: number): Promise<void> {
     const result = await this.jobPostingRepository.delete({ id });
-
+    
     if (result.affected === 0) {
       throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
     }

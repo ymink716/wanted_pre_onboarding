@@ -25,26 +25,26 @@ export class JobPostingRepository extends Repository<JobPosting> {
     return jobPosting;
   }
 
-  async updateJobPosting(
-    id: number,
-    updateJobPostingDto: UpdateJobPostingDto,
-  ): Promise<JobPosting> {
-    const { position, compensation, tech, description } = updateJobPostingDto;
+  // async updateJobPosting(
+  //   id: number,
+  //   updateJobPostingDto: UpdateJobPostingDto,
+  // ): Promise<JobPosting> {
+  //   const { position, compensation, tech, description } = updateJobPostingDto;
 
-    const jobPosting = await this.findOne({ where: { id } });
-    console.log(jobPosting);
-    if (!jobPosting) {
-      throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
-    }
+  //   const jobPosting = await this.findOne({ where: { id } });
 
-    jobPosting.position = position;
-    jobPosting.compensation = compensation;
-    jobPosting.tech = tech;
-    jobPosting.description = description;
+  //   if (!jobPosting) {
+  //     throw new NotFoundException('해당 공고를 찾을 수 없습니다.');
+  //   }
 
-    await this.save(jobPosting);
-    return jobPosting;
-  }
+  //   jobPosting.position = position;
+  //   jobPosting.compensation = compensation;
+  //   jobPosting.tech = tech;
+  //   jobPosting.description = description;
+
+  //   await this.save(jobPosting);
+  //   return jobPosting;
+  // }
 
   async getPostByKeyword(keyword: string): Promise<JobPosting[]> {
     const posts = await this.createQueryBuilder('job-posting')
