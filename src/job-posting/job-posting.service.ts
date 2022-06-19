@@ -8,7 +8,7 @@ import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Company } from 'src/entities/company.entity';
 import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
-import { Repository } from 'typeorm';
+import { Equal, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class JobPostingService {
@@ -87,7 +87,7 @@ export class JobPostingService {
     }
 
     const idList = await this.jobPostingRepository.find({
-      where: { company: jobPosting.company },
+      where: { company: jobPosting.company, id: Not(Equal(jobPosting.id)) },
       select: ['id'],
     });
 

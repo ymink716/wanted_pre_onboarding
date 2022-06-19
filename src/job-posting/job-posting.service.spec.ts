@@ -4,8 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Company } from 'src/entities/company.entity';
 import { JobPosting } from 'src/entities/job-posting.entity';
-import { DeleteResult } from 'typeorm';
-import { CompanyRepository } from './company.repository';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateJobPostingDto } from './dto/create-job-posting.dto';
 import { ResponseJobPostingDto } from './dto/response-job-posting.dto';
 import { UpdateJobPostingDto } from './dto/update-job-posting.dto';
@@ -46,7 +45,7 @@ const postingId = 1;
 describe('JobPostingService', () => {
   let service: JobPostingService;
   let jobPostingRepository: JobPostingRepository;
-  let companyRepository: CompanyRepository;
+  let companyRepository: Repository<Company>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
